@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 function Header({  }) {
 	return (
-		<header>
-      <h1>Movie Database</h1>
-      <nav>
-        <Link to="/">Home</Link>
-        {/* Add more navigation links if needed */}
-      </nav>
+		<header className='main-header'>
+      <h1>
+        <nav>
+          <Link to="/">Movie Database -&nbsp;<span>Your database for movies</span></Link>
+        </nav>
+      </h1>
     </header>
 	);
 }

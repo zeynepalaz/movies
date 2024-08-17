@@ -1,0 +1,15 @@
+.search-area {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0 30px;
+
+  &__input {
+    input {
+      width: 500px !important;
+    }
+
+    button {
+      background-color: #30004a;
+    }
+  }
+}

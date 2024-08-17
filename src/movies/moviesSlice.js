@@ -1,41 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwODc0ODQ0ZGNkNDcwNmNjMmYyOWQ0N2U2MjU0N2Y0YyIsIm5iZiI6MTcyMjY5NDIyMC4zMzkyLCJzdWIiOiI2NmE3ZDljYjAyYzk3MjI0NTI5ZmQ5MjciLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.5MPoBPTw_g0SMrsAssifGIgowkuiLsuGF-0CtJ4M1GU';
+import { baseUrl, options } from './../app/apiConfigs'
 
-export const fetchMovieData = createAsyncThunk(
-  'movies/fetchMovieData',
+export const movieActions = createAsyncThunk(
+  'movies/movieActions',
   async (dataInfo) => {
-    const data_url = dataInfo.dataUrl;
+    const data_url = baseUrl + dataInfo.dataUrl;
     const mediaType = dataInfo.mediaType;
 
-    let moviesArray = []; 
-    const options = { 
-      method: 'GET', 
-      headers: { 
-        accept: 'application/json', 
-        Authorization: `Bearer ${API_KEY}`
-      } 
-    };
-
     const response = await axios.get(data_url, options);
-    const data = response.data;
 
     if(mediaType == "movieDetail") {
-      moviesArray = data || [];
+      return {
+        type: 'detail', data: response?.data
+      }
     } else {
-      moviesArray = data.results || [];
+      return {
+        type: 'list', data: response?.data?.results
+      }
     }
-
-    return {moviesArray, data_url};
   },
 );
 
 const initialState = {
   movieData: [],
-  dataUrl: "",
-  status: 'idle',
-  error: null,
+  movieDetailData: {},
+  movieDataUrl: "",
+  movieStatus: 'idle',
+  movieError: null,
 };
 
 const moviesSlice = createSlice({
@@ -46,17 +39,22 @@ const moviesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchMovieData.pending, (state) => {
-      state.status = 'loading';
+    .addCase(movieActions.pending, (state) => {
+      state.movieStatus = 'loading';
     })
-    .addCase(fetchMovieData.fulfilled, (state, action) => {
-      state.status = 'succeeded';
-      state.movieData = action.payload.moviesArray;      
-      state.dataUrl = action.payload.data_url;         
+    .addCase(movieActions.fulfilled, (state, action) => {
+      state.movieStatus = 'succeeded';
+      console.log(action, "action")
+      if(action.payload.type === "list") {
+        state.movieData = action.payload.data;  
+      } else {
+        state.movieDetailData = action.payload.data; 
+      }
+      state.movieDataUrl = action.payload.data_url;       
     })
-    .addCase(fetchMovieData.rejected, (state, action) => {
-      state.status = 'failed';
-      state.error = action.error.message;
+    .addCase(movieActions.rejected, (state, action) => {
+      state.movieStatus = 'failed';
+      state.movieError = action.error.message;
     });
   },
 });

@@ -1,12 +1,29 @@
 .movie-card {
-  width: 300px;
-  overflow: hidden;
-  padding: 10px 0 0 10px;
+  width: 185px;
+  //overflow: hidden;
+  margin: 15px;
   box-sizing: border-box;
 
   &__poster {
     img {
-      width: 50px;
+      display: block;
+      width: 185px;
     }
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    overflow: hidden;
+    height: 26px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 6px;
+    font-size: 18px;
+  }
+
+  &__genre {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
   }
 }

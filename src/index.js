@@ -1,12 +1,15 @@
+import './index.scss';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import store from './app/store'; // Adjust path according to your project structure
 import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import App from './App';
+import store from './app/store'; 
 import Homepage from './pages/Homepage';
 import MovieDetails from './pages/MovieDetails';
+import SearchResults from './pages/SearchResults';
 
  // Create a browser router with your routes
  const router = createBrowserRouter([
@@ -17,6 +20,10 @@ import MovieDetails from './pages/MovieDetails';
 		{
 		  path: "/", 
 		  element: <Homepage />
+		},
+		{
+		  path: "/search-results/:searchParams", 
+		  element: <SearchResults />
 		},
 		{
 		  path: "/movie/:id", 

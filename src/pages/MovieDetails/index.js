@@ -2,41 +2,39 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMovieData } from '../../movies/moviesSlice';
+
+import { movieActions } from '../../movies/moviesSlice';
 
 const MovieDetails = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const dataInfo = {
-		dataUrl : `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+		dataUrl : `/movie/${id}?language=en-US`,
 		mediaType : "movieDetail"
 	}
 
-  const dispatch = useDispatch();
-  const movieData = useSelector((state) => state.moviesReducer.movieData);
-  const movieDataUrl = useSelector((state) => state.moviesReducer.movieDataUrl);
-	const movieStatus = useSelector((state) => state.moviesReducer.status);
-	const moviesError = useSelector((state) => state.moviesReducer.error);
-
+  const { movieDetailData, movieStatus, movieError} = useSelector((state) => state.moviesReducer);
+ 
   useEffect(() => {
-    dispatch(fetchMovieData(dataInfo));
-  }, [id, movieDataUrl, dispatch]);
+    dispatch(movieActions(dataInfo));
+  }, []);
 
   if (movieStatus === 'loading') {
     return <h2>Loading...</h2>;
   }
 
   if (movieStatus === 'failed') {
-    return <p>{moviesError}</p>;
+    return <p>{movieError}</p>;
   }
 
-  if (!movieData) {
+  if (!movieDetailData) {
     return <div>Data yok</div>;
   }
 
   return (
     <div>
-      <img src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`} />
+      <img src={`https://image.tmdb.org/t/p/w500${movieDetailData.poster_path}`} />
     </div>
   );
 	
