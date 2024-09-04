@@ -1,3 +1,5 @@
+import './moviedetails.scss';
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react'; 
@@ -33,8 +35,21 @@ const MovieDetails = () => {
   }
 
   return (
-    <div>
-      <img src={`https://image.tmdb.org/t/p/w500${movieDetailData.poster_path}`} />
+    <div className='movie-details'>
+      <div className='movie-details__container'>
+        <div className='movie-details__title'>{movieDetailData?.original_title}</div>
+  
+
+        <div className='movie-details__content'>
+          <figure className='movie-details__img'>
+            <img src={`https://image.tmdb.org/t/p/w500${movieDetailData?.poster_path}`} />
+          </figure>
+          <div className='movie-details__info'>
+            <div className='movie-details__overview'>{movieDetailData?.overview}</div>
+            <div className='movie-details__genres'>{movieDetailData?.genres?.map(genre => genre.name).join(", ")}</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 	
